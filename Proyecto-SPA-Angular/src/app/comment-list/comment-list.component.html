@@ -1,0 +1,24 @@
+<div>
+  <h3>Comments</h3>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Text</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let comment of comments">
+        <td>{{ comment.id }}</td>
+        <td>{{ comment.text }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <form [formGroup]="commentForm" (ngSubmit)="addComment()">
+    <div class="form-group">
+      <label for="text">Comment Text:</label>
+      <input type="text" formControlName="text" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Add Comment</button>
+  </form>
+</div>

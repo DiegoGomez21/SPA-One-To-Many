@@ -1,0 +1,175 @@
+<div *ngIf="viewMode">
+  <div *ngIf="currentTutorial.id">
+    <h4>Tutorial</h4>
+    <div>
+      <label><strong>Title:</strong></label> {{ currentTutorial.title }}
+    </div>
+    <div>
+      <label><strong>Description:</strong></label>
+      {{ currentTutorial.description }}
+    </div>
+    <div>
+      <label><strong>Status:</strong></label>
+      {{ currentTutorial.published ? "Published" : "Pending" }}
+    </div>
+
+    <a class="badge badge-warning" routerLink="/tutorials/{{ currentTutorial.id }}">Edit</a>
+  </div>
+
+  <div *ngIf="!currentTutorial.id">
+    <br />
+    <p>Selecciona un tutorial...</p>
+  </div>
+  <div *ngIf="currentTutorial.id">
+  <br />
+    <div class="comments">
+      <h3>Comments:</h3>
+      <ul>
+        <li *ngFor="let comment of comments">
+          <p><strong>{{ comment.name }} : </strong>{{ comment.text }}</p>
+        </li>
+      </ul>
+    </div>
+    <p *ngIf="!comments || !comments.length">No comments yet.</p>
+    <br>
+    <form (ngSubmit)="addComment()" #commentForm="ngForm">
+      <div class="form-group">
+        <label for="name">Nombre: </label>
+        <input type="text" class="form-control" name="name" [(ngModel)]="comment.name" required>
+      </div>    
+      <div class="form-group">
+        <label for="comment">Comentario: </label>
+        <textarea class="form-control" name="comment" [(ngModel)]="comment.text" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Agregar Comentario</button>
+    </form>
+  </div>
+
+  <div *ngIf="currentTutorial.id" class="edit-form">
+    <form>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" [(ngModel)]="currentTutorial.title" name="title" />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" id="description" [(ngModel)]="currentTutorial.description" name="description" />
+      </div>
+
+      <div class="form-group">
+        <label><strong>Status:</strong></label>
+        {{ currentTutorial.published ? "Published" : "Pending" }}
+      </div>
+    </form>
+
+    <button class="badge badge-primary mr-2" *ngIf="currentTutorial.published" (click)="updatePublished(false)">UnPublish</button>
+    <button *ngIf="!currentTutorial.published" class="badge badge-primary mr-2" (click)="updatePublished(true)">Publish</button>
+
+    <button class="badge badge-danger mr-2" (click)="deleteTutorial()">Delete</button>
+
+    <button type="submit" class="badge badge-success mb-2" (click)="updateTutorial()">Update</button>
+
+    <p>{{ message }}</p>
+  </div>
+
+  <!-- <div *ngIf="!currentTutorial.id">
+    <br />
+    <p>No has seleccionado ningun tutorial</p>
+  </div> -->
+</div>
+
+
+
+<!-- <div *ngIf="viewMode">
+  <h4>{{ currentTutorial.title }}</h4>
+
+  <p>{{ currentTutorial.description }}</p>
+
+  <p>
+    <strong>Status:</strong> {{ currentTutorial.published ? "Published" : "Pending" }}
+  </p>
+
+  <a [routerLink]="['/tutorials', currentTutorial.id, 'edit']">Edit</a>
+  <br />
+  <br />
+  <form (ngSubmit)="addComment()" #commentForm="ngForm">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" name="name" [(ngModel)]="comment.name" required>
+    </div>    
+    <div class="form-group">
+      <label for="comment">Comment</label>
+      <textarea class="form-control" name="comment" [(ngModel)]="comment.text" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Comment</button>
+  </form>
+  
+  <div class="comments">
+    <h3>Comments:</h3>
+    <ul>
+      <li *ngFor="let comment of comments">
+        <p><strong>{{ comment.name }}</strong></p>
+        <p>{{ comment.text }}</p>
+      </li>
+    </ul>
+  </div>
+  
+  <p *ngIf="!comments || !comments.length">No comments yet.</p>
+  
+  
+  <div *ngIf="currentTutorial.id">
+    <h4>Tutorial</h4>
+    <div>
+      <label><strong>Title:</strong></label> {{ currentTutorial.title }}
+    </div>
+    <div>
+      <label><strong>Description:</strong></label>
+      {{ currentTutorial.description }}
+    </div>
+    <div>
+      <label><strong>Status:</strong></label>
+      {{ currentTutorial.published ? "Published" : "Pending" }}
+    </div>
+
+    <a class="badge badge-warning" routerLink="/tutorials/{{ currentTutorial.id }}">Edit</a>
+  </div>
+
+  <div *ngIf="!currentTutorial.id">
+    <br />
+    <p>Please click on a Tutorial...</p>
+  </div>
+
+  <div *ngIf="currentTutorial.id" class="edit-form">
+    <form>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" [(ngModel)]="currentTutorial.title" name="title" />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" id="description" [(ngModel)]="currentTutorial.description" name="description" />
+      </div>
+
+      <div class="form-group">
+        <label><strong>Status:</strong></label>
+        {{ currentTutorial.published ? "Published" : "Pending" }}
+      </div>
+    </form>
+
+    <button class="badge badge-primary mr-2" *ngIf="currentTutorial.published" (click)="updatePublished(false)">UnPublish</button>
+    <button *ngIf="!currentTutorial.published" class="badge badge-primary mr-2" (click)="updatePublished(true)">Publish</button>
+
+    <button class="badge badge-danger mr-2" (click)="deleteTutorial()">Delete</button>
+
+    <button type="submit" class="badge badge-success mb-2" (click)="updateTutorial()">Update</button>
+
+    <p>{{ message }}</p>
+  </div>
+
+  <div *ngIf="!currentTutorial.id">
+    <br />
+    <p>Cannot access this Tutorial...</p>
+  </div>
+</div>
+
+ -->
